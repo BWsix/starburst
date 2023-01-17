@@ -43,7 +43,7 @@ type Track = {
   };
 };
 
-async function parseFiles(arrayOfFiles: string[]) {
+async function parseAlbums(arrayOfFiles: string[]) {
   const albums = new Map<string, Album>();
 
   for (const file of arrayOfFiles) {
@@ -70,12 +70,11 @@ async function parseFiles(arrayOfFiles: string[]) {
     }
   }
 
-  console.log(albums.entries());
   return albums;
 }
 
-export const trackRouter = createTRPCRouter({
+export const albumRouter = createTRPCRouter({
   all: publicProcedure.query(() => {
-    return parseFiles(getAllFiles("assets", []));
+    return parseAlbums(getAllFiles("assets", []));
   }),
 });
