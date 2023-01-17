@@ -77,4 +77,17 @@ export const albumRouter = createTRPCRouter({
   all: publicProcedure.query(() => {
     return parseAlbums(getAllFiles("assets", []));
   }),
+  groupByArtist: publicProcedure.query(async () => {
+    const a = await parseAlbums(getAllFiles("assets", []));
+
+    const albums = new Map<string, Album[]>();
+    a.forEach((album) => {
+      albums.set(album.artist || "N/A", []);
+    });
+    a.forEach((album) => {
+      albums.get(album.artist || "N/A")?.push(album);
+    });
+
+    return albums;
+  }),
 });
