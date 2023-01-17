@@ -3,14 +3,15 @@ import { parseFile } from "music-metadata";
 import path from "path";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
-function getAllFiles(dirPath: string, arrayOfFiles: string[]) {
+const musicLibrary = process.env.DIR_PATH as string;
+function getAllFiles(dirPath = musicLibrary, arrayOfFiles: string[] = []) {
   const files = fs.readdirSync(dirPath);
 
   files.forEach(function (file) {
-    const fileStat = fs.statSync(dirPath + "/" + file);
+    const fileStat = fs.statSync(dirPath + "\\" + file);
 
     if (fileStat.isDirectory()) {
-      arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles);
+      arrayOfFiles = getAllFiles(dirPath + "\\" + file, arrayOfFiles);
     } else {
       if (file.endsWith("flac") || file.endsWith("mp3")) {
         arrayOfFiles.push(path.join(dirPath, file));
@@ -75,10 +76,10 @@ async function parseAlbums(arrayOfFiles: string[]) {
 
 export const albumRouter = createTRPCRouter({
   all: publicProcedure.query(() => {
-    return parseAlbums(getAllFiles("assets", []));
+    return parseAlbums(getAllFiles());
   }),
   groupByArtist: publicProcedure.query(async () => {
-    const a = await parseAlbums(getAllFiles("assets", []));
+    const a = await parseAlbums(getAllFiles());
 
     const albums = new Map<string, Album[]>();
     a.forEach((album) => {
