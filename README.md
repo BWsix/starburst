@@ -1,3 +1,5 @@
-# Music Streaming Service
+# Starburst
 
-Project inspired by <https://github.com/TomDoesTech/with-streaming-with-next.js>
+Starburst, a self hosted music streaming server that sucks.
+
+Inspired by <https://github.com/TomDoesTech/with-streaming-with-next.js>
